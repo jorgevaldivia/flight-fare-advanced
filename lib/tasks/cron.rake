@@ -6,21 +6,29 @@ task :cron => :environment do
     doc = Nokogiri::XML(open("http://www.kayak.com/h/rss/fare?code=#{flight.origin}&dest=#{flight.destination}&tm=#{flight.year}#{flight.month}"))
     links = Array.new()
 
+    best = Hash.new
+    best["price"] = 100000
+
     doc.xpath("//item").each do |n| 
-      x = Hash.new
+      current = Hash.new
       n.xpath("*").each do |n|
-        x[n.name] = n.text
+        current[n.name] = n.text
       end
 
-      stat = Stat.new
-      stat.flight_id = flight.id
-      stat.price = x["price"]
-      stat.airline = x["airline"]
-      stat.link = x["link"]
-      stat.departure_date = x["departDate"]
-      stat.return_date = x["returnDate"]
-      stat.save
+      if(current["price"].to_i < best["price"].to_i)
+        best = current
+      end # end if current
     end # end doc 
+
+    stat = Stat.new
+    stat.flight_id = flight.id
+    stat.price = best["price"]
+    stat.airline = best["airline"]
+    stat.link = best["link"]
+    stat.departure_date = best["departDate"]
+    stat.return_date = best["returnDate"]
+    stat.save
+
 
   end # end flights
 end
