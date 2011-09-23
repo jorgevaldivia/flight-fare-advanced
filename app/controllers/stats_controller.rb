@@ -6,7 +6,7 @@ class StatsController < ApplicationController
 
     @dates = Array.new
     @stats.each do |stat|
-      @dates.push(stat.created_at)
+      @dates.push(stat.created_at.strftime('%m/%d/ %I:%M %p'))
     end
 
     @dates = @dates.uniq
