@@ -1,0 +1,22 @@
+desc "The task that runs the import"
+task :cron => :environment do
+  flights = Flight.all
+
+  flights.each do |flight|
+
+  end
+
+  @doc = Nokogiri::XML(open("http://www.kayak.com/h/rss/fare?code=iah&dest=gdl,clq,agu&tm=201111"))
+  
+  @links = Array.new()
+  
+  @doc.xpath("//item").each do |n| 
+    #output.root << n
+    
+    x = Hash.new
+    n.xpath("*").each do |n|
+      x[n.name] = n.text
+    end
+    @links.push(x)
+  end
+end

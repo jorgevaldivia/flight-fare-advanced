@@ -1,0 +1,15 @@
+class StatsController < ApplicationController
+
+  def index
+    @doc = Nokogiri::HTML(open("http://www.kayak.com/#flights/IAH,nearby-gdl,nearby/2011-11-20/2011-11-27"))
+        
+    @links = Array.new()
+
+    # Print out each link using a CSS selector
+    @doc.css('div#content_div a').each do |link|
+      puts link.content
+      @links.push(link)
+    end
+  end
+
+end

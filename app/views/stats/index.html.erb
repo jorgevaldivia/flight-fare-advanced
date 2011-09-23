@@ -1,0 +1,101 @@
+<script type="text/javascript" src="/javascripts/highcharts.js"></script>
+
+<script type="text/javascript">
+
+var chart;
+$(document).ready(function() {
+	chart = new Highcharts.Chart({
+		chart: {
+		    renderTo: 'container',
+		    defaultSeriesType: 'line',
+		    marginRight: 130,
+		    marginBottom: 25
+		},
+		title: {
+		    text: 'Flight Fares',
+		    x: -20 //center
+		},
+		subtitle: {
+		    text: 'By: Jorge Valdivia',
+		    x: -20
+		},
+		xAxis: {
+		    categories: [<% @dates.each do |date| %>"<%= date %>",<% end %>]
+		},
+		yAxis: {
+		    title: {
+			text: 'Price'
+		    },
+		    plotLines: [{
+			    value: 0,
+			    width: 1,
+			    color: '#808080'
+			}]
+		},
+		tooltip: {
+		    formatter: function() {
+			return '<b>'+ this.series.name +'</b><br/>'+
+			//this.x +': '+ this.y +'C';
+			'$' + this.y + '.00';
+		    }
+		},
+		
+		plotOptions: {
+		    series: {
+			cursor: 'pointer',
+			point: {
+			    events: {
+				click: function() {
+				    document.getElementById("link").innerHTML += "<br/><a href='" + format_uri(this.link) + "'>" + format_uri(this.link) + "</a>"
+				    //myWindow = window.open(decodeURIComponent(this.link),'')
+				    //myWindow = window.open(format_uri(this.link),'')
+				    //window.location.href = format_uri(this.link);
+				}
+			    }
+			},
+			marker: {
+			    lineWidth: 1
+			}
+		    }
+		},
+		
+		
+		legend: {
+		    layout: 'vertical',
+		    align: 'right',
+		    verticalAlign: 'top',
+		    x: -10,
+		    y: 100,
+		    borderWidth: 0
+		},
+		series: [
+
+<% @flights.each do |flight| %>
+{
+name: "<%= flight.origin %> to <%= flight.destination %>",
+data: [<% flight.stats.each do |stat| %>{link: "<%= stat.link %>", y: <%= stat.price %>}, <% end %>],
+link: "<%= flight.origin %> ---",
+},
+<% end %>
+		    ]
+	    });
+  
+  
+    });
+
+
+
+
+function format_uri(uri){
+    //var uri="http://www.kayak.com/in?ai=&amp;p=&amp;url=%2Fh%2Fbuzz%2Fview%3Fac%3D%26action%3Dcreate%26airport%3DIAH%26code%3DIAH%26dt%3DA%26t%3D%26mc%3DUSD%26tm%3D201111%26dest1%3DGDL%26desthint1%3DGDL";
+    var uri_encode=encodeURIComponent(uri);
+    return decodeURIComponent(uri_encode);
+}
+  
+</script>
+
+<div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
+
+
+<div id="link">
+</div>

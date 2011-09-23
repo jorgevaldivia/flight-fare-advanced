@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  flight: 
+  price: 1.5
+  airline: MyString
+  link: MyText
+  departure_date: MyString
+  return_date: MyString
+
+two:
+  flight: 
+  price: 1.5
+  airline: MyString
+  link: MyText
+  departure_date: MyString
+  return_date: MyString

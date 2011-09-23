@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  origin: MyString
+  destination: MyString
+  year: MyString
+  month: MyString
+
+two:
+  origin: MyString
+  destination: MyString
+  year: MyString
+  month: MyString
